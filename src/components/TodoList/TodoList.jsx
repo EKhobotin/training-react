@@ -8,12 +8,9 @@ import { nanoid } from "nanoid";
 export class TodoList extends React.Component {
   state = {
     todos: todosData,
-    newTodoTitle: "React",
+    newTodoTitle: "",
   };
-
   handleRemoveTodo = (id) => {
-    // const newTodoArray = this.state.todos.filter(item => item.id !== id)
-    // console.log(newTodoArray)
     this.setState((prevState) => ({
       todos: prevState.todos.filter((item) => item.id !== id),
     }));
@@ -27,35 +24,26 @@ export class TodoList extends React.Component {
     if (!this.state.newTodoTitle) {
       return;
     }
-    const newTodo = {
-      id: crypto.randomUUID(),
-      completed: false,
-      todo: this.state.newTodoTitle,
-    };
-
     this.setState((prevState) => ({
-      todos: [...prevState.todos, newTodo],
+      todos: [
+        ...prevState.todos,
+        { id: nanoid(), completed: false, todo: prevState.newTodoTitle },
+      ],
       newTodoTitle: "",
     }));
   };
-  handleToggleTodo = (id) => {
-    console.log(id);
-    // this.setState(prevState => ({
-    // 	todos: prevState.todos.map(item => (item.id === id ? { ...item, completed: !item.completed } : item)),
-    // }))
+
+  handleToggledTodo = (id) => {
     this.setState((prevState) => ({
-      todos: prevState.todos.map((item) => {
-        if (item.id === id) {
-          return { ...item, completed: !item.completed };
-        } else {
-          return item;
-        }
-      }),
+      todos: prevState.todos.map((item) =>
+        item.id === id ? { ...item, completed: !item.completed } : item
+      ),
     }));
   };
   handleDeleteAll = () => {
     this.setState({ todos: [] });
   };
+
   handleDeleteSelected = () => {
     this.setState((prevState) => ({
       todos: prevState.todos.filter((item) => !item.completed),
@@ -75,13 +63,12 @@ export class TodoList extends React.Component {
             />
             <StyledButton onClick={this.handleAddTodo}>Add</StyledButton>
           </Flex>
-
           {todos.map((item) => (
             <StyledTodo key={item.id}>
               <input
                 type="checkbox"
                 checked={item.completed}
-                onChange={() => this.handleToggleTodo(item.id)}
+                onClick={() => this.handleToggledTodo(item.id)}
               />
               <span>{item.todo}</span>
               <StyledButton
@@ -92,7 +79,6 @@ export class TodoList extends React.Component {
               </StyledButton>
             </StyledTodo>
           ))}
-
           <button onClick={this.handleDeleteAll}>Clear</button>
           <button onClick={this.handleDeleteSelected}>Clear selected</button>
         </StyledTodoList>
@@ -102,22 +88,22 @@ export class TodoList extends React.Component {
 }
 
 // export const TodoList = () => {
-// return (
-// 	<div>
-// 		<StyledTodoList>
-// 			<Flex $height='auto'>
-// 				<StyledInput type='text' />
-// 				<StyledButton>Add</StyledButton>
-// 			</Flex>
-// 			{todos.map(item => (
-// 				<StyledTodo>
-// 					<input type='checkbox' />
-// 					<span>{item.todo}</span>
-// 					<StyledButton size='18px'>Delete</StyledButton>
-// 				</StyledTodo>
-// 			))}
-// 			<button>Clear</button>
-// 		</StyledTodoList>
-// 	</div>
-// )
-// }
+//   return (
+//     <div>
+//       <StyledTodoList>
+//         <Flex $height="auto">
+//           <StyledInput type="text" />
+//           <StyledButton>Add</StyledButton>
+//         </Flex>
+//         {todos.map((item) => (
+//           <StyledTodo>
+//             <input type="checkbox" />
+//             <span>{item.todo}</span>
+//             <StyledButton size="18px">Delete</StyledButton>
+//           </StyledTodo>
+//         ))}
+//         <button>Clear</button>
+//       </StyledTodoList>
+//     </div>
+//   );
+// };

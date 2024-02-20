@@ -5,6 +5,7 @@ import { ColorPicker } from "./components/ColorPicker/ColorPicker";
 import colors from "./assets/colors.json";
 import { RegisterForm } from "./components/RegisterForm/RegisterForm";
 import { RegisterFormUncontrolled } from "./components/RegisterForm/RegisterFormUncontrolled";
+import { Employee } from "./components/Employee/Employee";
 
 export const App = () => {
   return (
@@ -13,7 +14,8 @@ export const App = () => {
       {/* <ColorPicker colors={colors} /> */}
       {/* <TodoList /> */}
       {/* <RegisterForm /> */}
-      <RegisterFormUncontrolled />
+      {/* <RegisterFormUncontrolled /> */}
+      <Employee />
     </>
   );
 };

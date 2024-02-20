@@ -2,14 +2,31 @@ import { EmployeesFilter } from "./EmployeesFilter";
 import { EmployeeList } from "./EmployeeList";
 import userData from "./../../assets/users.json";
 import React from "react";
+import Modal from "../Modal/Modal";
 
 export class Employee extends React.Component {
   state = {
     users: userData,
     searchStr: "",
     isAvailable: false,
-    activeSkill: "react",
+    activeSkill: "all",
+    isOpenModal: false,
+    currentUser: null,
   };
+  componentDidMount() {
+    const users = JSON.parse(localStorage.getItem("USERS_DATA"));
+    console.log(users);
+    if (users?.length) {
+      this.setState({ users: users });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.users.length !== this.state.users.length) {
+      localStorage.setItem("USERS_DATA", JSON.stringify(this.state.users));
+    }
+  }
+
   handleDeleteUser = (id) => {
     // console.log(id);
     this.setState((prevState) => ({
@@ -44,8 +61,23 @@ export class Employee extends React.Component {
     this.setState({ activeSkill: skill });
     console.log(skill);
   };
+
+  handleToggleModal = () => {
+    this.setState((prevState) => ({ isOpenModal: !prevState.isOpenModal }));
+  };
+  handleClickUser = (user) => {
+    this.setState({ currentUser: user, isOpenModal: true });
+    console.log(user);
+  };
   render() {
-    const { users, searchStr, isAvailable, activeSkill } = this.state;
+    const {
+      users,
+      searchStr,
+      isAvailable,
+      activeSkill,
+      isOpenModal,
+      currentUser,
+    } = this.state;
     const filterUsers = this.getFilterData();
     return (
       <>
@@ -57,10 +89,19 @@ export class Employee extends React.Component {
           activeSkill={activeSkill}
           onChangeActiveSkill={this.handleChangeActiveSkill}
         />
+        <button onClick={this.handleToggleModal}>Open Modal</button>
         <EmployeeList
+          handleClickUser={this.handleClickUser}
           users={filterUsers}
           onDeleteUser={this.handleDeleteUser}
         />
+        {isOpenModal ? (
+          <Modal title={currentUser.name} closeModal={this.handleToggleModal}>
+            <h2>Name: {currentUser.name}</h2>
+            <h2>Email: {currentUser.email}</h2>
+            <h2>{currentUser.isOpenToWork ? "Open" : "Busy"}</h2>
+          </Modal>
+        ) : null}
       </>
     );
   }

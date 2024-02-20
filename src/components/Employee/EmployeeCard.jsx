@@ -8,7 +8,9 @@ export const EmployeeCard = ({
   bio,
   skills,
   onDeleteUser,
+  handleClickUser,
 }) => {
+  const user = { id, isOpenToWork, name, email, bio, skills };
   return (
     <li className={clsx(s.userCard, isOpenToWork && s.openToWork)}>
       <h3>{name}</h3>
@@ -21,6 +23,9 @@ export const EmployeeCard = ({
           </li>
         ))}
       </ul>
+      <button className={s.btn} onClick={() => handleClickUser(user)}>
+        ReadMore
+      </button>
       <button className={s.btn} onClick={() => onDeleteUser(id)}>
         Delete
       </button>

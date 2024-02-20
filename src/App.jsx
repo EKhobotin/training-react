@@ -6,16 +6,17 @@ import colors from "./assets/colors.json";
 import { RegisterForm } from "./components/RegisterForm/RegisterForm";
 import { RegisterFormUncontrolled } from "./components/RegisterForm/RegisterFormUncontrolled";
 import { Employee } from "./components/Employee/Employee";
+import Modal from "./components/Modal/Modal";
 
 export const App = () => {
   return (
     <>
       {/* <Counter /> */}
-      {/* <ColorPicker colors={colors} /> */}
+      <ColorPicker colors={colors} />
       {/* <TodoList /> */}
       {/* <RegisterForm /> */}
       {/* <RegisterFormUncontrolled /> */}
-      <Employee />
+      {/* <Employee /> */}
     </>
   );
 };

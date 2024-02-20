@@ -9,6 +9,10 @@ import {
 export class ColorPicker extends React.Component {
   state = { currentColor: "white" };
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextState.colors !== this.state.currentColor;
+  }
+
   handleSetColor = (color) => {
     this.setState({ currentColor: color });
   };

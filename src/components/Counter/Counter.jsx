@@ -12,6 +12,14 @@ export class Counter extends React.Component {
     counter: 0,
     step: 1,
   };
+  componentDidMount() {
+    console.log("mount");
+  }
+  componentDidUpdate(prevProps, prevState) {
+    console.log(prevProps);
+    console.log(prevState);
+    console.log("update");
+  }
 
   handleIncrement = () => {
     this.setState((prev) => ({ counter: prev.counter + this.state.step }));

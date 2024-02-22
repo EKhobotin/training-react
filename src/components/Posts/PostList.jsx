@@ -2,10 +2,11 @@ import React, { useContext } from "react";
 import { PostCard } from "./PostCard";
 import styled from "styled-components";
 import { MyContext } from "../..";
+import { UserContext } from "../../context/Context.Provider";
 
 export const PostList = ({ posts, user }) => {
   const context = useContext(MyContext);
-  console.log(context);
+  const userContext = useContext(UserContext);
   return (
     <StyledSection>
       <h1>Posts</h1>

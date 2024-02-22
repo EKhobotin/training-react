@@ -12,13 +12,13 @@ import { Posts } from "./components/Posts/Posts";
 export const App = () => {
   return (
     <>
-      {/* <Posts /> */}
+      <Posts />
       {/* <Counter /> */}
       {/* <ColorPicker colors={colors} /> */}
       {/* <TodoList /> */}
       {/* <RegisterForm /> */}
       {/* <RegisterFormUncontrolled /> */}
-      <Employee />
+      {/* <Employee /> */}
     </>
   );
 };

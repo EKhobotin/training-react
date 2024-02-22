@@ -13,10 +13,10 @@ export const App = () => {
   return (
     <>
       {/* <Posts /> */}
-      <Counter />
+      {/* <Counter /> */}
       {/* <ColorPicker colors={colors} /> */}
       {/* <TodoList /> */}
-      {/* <RegisterForm /> */}
+      <RegisterForm />
       {/* <RegisterFormUncontrolled /> */}
       {/* <Employee /> */}
     </>

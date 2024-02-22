@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { Component, useCallback, useEffect, useState } from "react";
 import SearchForm from "./SearchForm";
 import { PostList } from "./PostList";
 import styled from "styled-components";
@@ -12,29 +12,28 @@ export const Posts = () => {
   const [skip, setSkip] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [totalPosts, setTotalPosts] = useState(null);
+  const getData = useCallback(async () => {
+    try {
+      setLoading(true);
+      setErorr(null);
+      const { posts, total } = searchQuery
+        ? await fetchPosts({ skip })
+        : await fetchPostsByQuery({
+            skip,
+            q: searchQuery,
+          });
+      setPosts((prevState) => [...prevState, ...posts]);
+      setTotalPosts(total);
+    } catch (error) {
+      setErorr(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [searchQuery, skip]);
 
   useEffect(() => {
-    const getData = async () => {
-      try {
-        setLoading(true);
-        setErorr(null);
-        const { posts, total } = searchQuery
-          ? await fetchPosts({ skip })
-          : await fetchPostsByQuery({
-              skip,
-              q: searchQuery,
-            });
-        setPosts((prevState) => [...prevState, ...posts]);
-        setTotalPosts(total);
-      } catch (error) {
-        setErorr(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     getData();
-  }, [searchQuery, skip]);
+  }, [getData, searchQuery, skip]);
 
   const handleLoadMore = () => {
     // this.setState((prevState) => ({ skip: prevState.skip + 4 }));

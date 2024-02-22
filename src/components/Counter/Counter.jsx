@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import {
   Flex,
   FlexContainer,
@@ -10,10 +10,24 @@ import { Buttons } from "./Buttons";
 export const Counter = () => {
   const [counter, setCounter] = useState(0);
   const [step, setStep] = useState(1);
-
+  const myRef = useRef(null);
+  // створ.ємо юзреф і присвоюємо йому значення тру. значення реф не змінюється між рендерами, поки ми його не змінемо самі
+  const isFirstRender = useRef(true);
+  // при першому рендері юзефект побачить що юзреф = тру, присовїть йому фолс і ретурнеться, при другому і далі юзреф вже буде фолс іі буде виконуватись наступна логіка
   useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
     console.log("hello");
-  }, []);
+  }, [counter]);
+  // підразхунок кідбкосіт рендерів створюємо початковий реф = 0
+  const renderCount = useRef(0);
+  // створюємо юзефект залежний віж всього і при його виконанні збільшуємо рендер каунт на 1
+  useEffect(() => {
+    renderCount.current++;
+    console.log(renderCount.current);
+  });
 
   useEffect(() => {
     console.log("counter");
@@ -34,21 +48,25 @@ export const Counter = () => {
   };
 
   const calcResult = () => {
-    for (let i = 0; i < 10000, i++) { }
-    return 21
-  }
-// юзмемо виконує колбек і повертає результат кешуючи його, якщо нічого не змінюється то повторно не виконується, якщо б ми просто записали резалт = калкрезалт йшло б обчислення при кожній зміні стейт
-  const result = useMemo(() => { return calcResult() }, [])
-
-
-
+    for (let i = 0; i < 10000; i++) {}
+    return 21;
+  };
+  // юзмемо виконує колбек і повертає результат кешуючи його, якщо нічого не змінюється то повторно не виконується, якщо б ми просто записали резалт = калкрезалт йшло б обчислення при кожній зміні стейт
+  const result = useMemo(() => {
+    return calcResult();
+  }, []);
 
   return (
     <FlexContainer>
       <StyledCounter>
         <h2>result</h2>
         <h1>{counter}</h1>
-        <input type="text" value={step} onChange={handleChangeStep} />
+        <input
+          ref={myRef}
+          type="text"
+          value={step}
+          onChange={handleChangeStep}
+        />
         <Buttons
           handleDecrement={handleDecrement}
           handleIncrement={handleIncrement}

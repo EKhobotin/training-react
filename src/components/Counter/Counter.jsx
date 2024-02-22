@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import React, { useState, useEffect, useMemo, useRef, useReducer } from "react";
 import {
   Flex,
   FlexContainer,
@@ -8,8 +8,33 @@ import {
 import { Buttons } from "./Buttons";
 
 export const Counter = () => {
-  const [counter, setCounter] = useState(0);
-  const [step, setStep] = useState(1);
+  // 1 . створюэмо початковий стейт
+  const initialState = {
+    counter: 0,
+    step: 1,
+  };
+  // 2. створюємо функцію уапавління, завжди приймає стейт і екшн
+  const counterReducer = (state, action) => {
+    console.log(action);
+    switch (action.type) {
+      case "INCREMENT":
+        return { ...state, counter: state.counter + state.step };
+      case "DECREMENT":
+        return { ...state, counter: state.counter - state.step };
+      case "RESET":
+        return { ...state, counter: 0, step: 1 };
+      case "SETSTEP":
+        return { ...state, step: action.payload };
+
+      default:
+        return state;
+    }
+  };
+  //3. викликаємо сам хук
+  const [state, dispatch] = useReducer(counterReducer, initialState);
+  // console.log(state);
+  const { counter, step } = state;
+
   const myRef = useRef(null);
   // створ.ємо юзреф і присвоюємо йому значення тру. значення реф не змінюється між рендерами, поки ми його не змінемо самі
   const isFirstRender = useRef(true);
@@ -19,32 +44,36 @@ export const Counter = () => {
       isFirstRender.current = false;
       return;
     }
-    console.log("hello");
+    // console.log("hello");
   }, [counter]);
   // підразхунок кідбкосіт рендерів створюємо початковий реф = 0
   const renderCount = useRef(0);
   // створюємо юзефект залежний віж всього і при його виконанні збільшуємо рендер каунт на 1
   useEffect(() => {
     renderCount.current++;
-    console.log(renderCount.current);
+    // console.log(renderCount.current);
   });
 
   useEffect(() => {
-    console.log("counter");
+    // console.log("counter");
   }, [counter]);
 
   const handleIncrement = () => {
-    setCounter((prevState) => prevState + step);
+    dispatch({ type: "INCREMENT" });
+    // setCounter((prevState) => prevState + step);
   };
   const handleDecrement = () => {
-    setCounter((prevState) => prevState - step);
+    dispatch({ type: "DECREMENT" });
+    // setCounter((prevState) => prevState - step);
   };
   const handleReset = () => {
-    setCounter(0);
-    setStep(1);
+    dispatch({ type: "RESET" });
+    // setCounter(0);
+    // setStep(1);
   };
   const handleChangeStep = (e) => {
-    setStep(+e.target.value);
+    dispatch({ type: "SETSTEP", payload: +e.target.value });
+    // setStep(+e.target.value);
   };
 
   const calcResult = () => {

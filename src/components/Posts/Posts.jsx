@@ -1,9 +1,16 @@
-import React, { Component, useCallback, useEffect, useState } from "react";
+import React, {
+  Component,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import SearchForm from "./SearchForm";
 import { PostList } from "./PostList";
 import styled from "styled-components";
 import { fetchPosts, fetchPostsByQuery } from "../../services/api";
 import { Comment } from "react-loader-spinner";
+import { UserContext } from "../../context/Context.Provider";
 
 export const Posts = ({ user }) => {
   const [posts, setPosts] = useState([]);
@@ -12,6 +19,8 @@ export const Posts = ({ user }) => {
   const [skip, setSkip] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [totalPosts, setTotalPosts] = useState(null);
+  const { userName, logout } = useContext(UserContext);
+  console.log(userName);
   const getData = useCallback(async () => {
     try {
       setLoading(true);
@@ -48,6 +57,8 @@ export const Posts = ({ user }) => {
 
   return (
     <div>
+      <h1>{userName}</h1>
+      <button onClick={logout}>Exit</button>
       <SearchForm handleSetSearchQuery={handleSetSearchQuery} />
       <PostList posts={posts} user={user} />
       {loading && !posts.length && (

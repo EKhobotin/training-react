@@ -1,6 +1,7 @@
 import ReactDOM from "react-dom/client";
 import { App } from "./App";
 import { createContext } from "react";
+import { ContextProvider } from "./context/Context.Provider";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -20,6 +21,8 @@ const userContext = {
 
 root.render(
   <MyContext.Provider value={userContext}>
-    <App user={user} />
+    <ContextProvider>
+      <App user={user} />
+    </ContextProvider>
   </MyContext.Provider>
 );

@@ -2,12 +2,25 @@ import React, { Component } from "react";
 import styled from "styled-components";
 
 export default class SearchForm extends Component {
+  state = {
+    query: "",
+  };
+  handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(this.state);
+    this.props.handleSetSearchQuery(this.state.query);
+  };
+  handleChangeQuery = (e) => {
+    // console.log(e.target.value);
+    this.setState({ query: e.target.value });
+  };
   render() {
+    const { query } = this.state;
     return (
       <StyledWrapperForm>
-        <StyledForm>
-          <input type="text" />
-          <button>Search</button>
+        <StyledForm onSubmit={this.handleSubmit}>
+          <input type="text" value={query} onChange={this.handleChangeQuery} />
+          <button type="submit">Search</button>
         </StyledForm>
       </StyledWrapperForm>
     );

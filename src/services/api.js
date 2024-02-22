@@ -13,3 +13,14 @@ export const fetchPosts = async (configParams) => {
   console.log(data);
   return data;
 };
+
+export const fetchPostsByQuery = async (configParams) => {
+  const { data } = await axios.get("posts/search", {
+    params: {
+      limit: 4,
+      ...configParams,
+    },
+  });
+  console.log(data);
+  return data;
+};

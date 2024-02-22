@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { fetchPosts, fetchPostsByQuery } from "../../services/api";
 import { Comment } from "react-loader-spinner";
 
-export const Posts = () => {
+export const Posts = ({ user }) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [erorr, setErorr] = useState(null);
@@ -49,7 +49,7 @@ export const Posts = () => {
   return (
     <div>
       <SearchForm handleSetSearchQuery={handleSetSearchQuery} />
-      <PostList posts={posts} />
+      <PostList posts={posts} user={user} />
       {loading && !posts.length && (
         <div
           style={{

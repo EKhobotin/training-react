@@ -12,8 +12,8 @@ import { Posts } from "./components/Posts/Posts";
 export const App = () => {
   return (
     <>
-      <Posts />
-      {/* <Counter /> */}
+      {/* <Posts /> */}
+      <Counter />
       {/* <ColorPicker colors={colors} /> */}
       {/* <TodoList /> */}
       {/* <RegisterForm /> */}

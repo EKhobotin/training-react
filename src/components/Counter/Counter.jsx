@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Flex,
   FlexContainer,
@@ -7,57 +7,90 @@ import {
 } from "./Counter.styled";
 import { Buttons } from "./Buttons";
 
-export class Counter extends React.Component {
-  state = {
-    counter: 0,
-    step: 1,
-  };
-  componentDidMount() {
-    console.log("mount");
-  }
-  componentDidUpdate(prevProps, prevState) {
-    console.log(prevProps);
-    console.log(prevState);
-    console.log("update");
-  }
+export const Counter = () => {
+  const [counter, setCounter] = useState(0);
+  const [step, setStep] = useState(1);
 
-  handleIncrement = () => {
-    this.setState((prev) => ({ counter: prev.counter + this.state.step }));
+  const handleIncrement = () => {
+    setCounter((prevState) => prevState + step);
   };
-  handleDecrement = () => {
-    this.setState((prev) => ({ counter: prev.counter - this.state.step }));
+  const handleDecrement = () => {
+    setCounter((prevState) => prevState - step);
   };
-  handleReset = () => {
-    this.setState({ counter: 0, step: 1 });
+  const handleReset = () => {
+    setCounter(0);
+    setStep(1);
   };
-  handleChangeStep = (e) => {
-    this.setState({ step: +e.target.value }, () => {
-      console.log(this.state.step);
-    });
+  const handleChangeStep = (e) => {
+    setStep(+e.target.value);
   };
 
-  render() {
-    const { counter, step } = this.state;
-    return (
-      <FlexContainer>
-        <StyledCounter>
-          <h1>{counter}</h1>
-          <input type="text" value={step} onChange={this.handleChangeStep} />
-          <Buttons
-            handleDecrement={this.handleDecrement}
-            handleIncrement={this.handleIncrement}
-            handleReset={this.handleReset}
-          />
-          {/* <Flex>
-            <StyledButton onClick={this.handleDecrement}>minus</StyledButton>
-            <StyledButton onClick={this.handleReset}>reset</StyledButton>
-            <StyledButton onClick={this.handleIncrement}>plus</StyledButton>
-          </Flex> */}
-        </StyledCounter>
-      </FlexContainer>
-    );
-  }
-}
+  return (
+    <FlexContainer>
+      <StyledCounter>
+        <h1>{counter}</h1>
+        <input type="text" value={step} onChange={handleChangeStep} />
+        <Buttons
+          handleDecrement={handleDecrement}
+          handleIncrement={handleIncrement}
+          handleReset={handleReset}
+        />
+      </StyledCounter>
+    </FlexContainer>
+  );
+};
+
+// export class Counter extends React.Component {
+//   state = {
+//     counter: 0,
+//     step: 1,
+//   };
+//   componentDidMount() {
+//     console.log("mount");
+//   }
+//   componentDidUpdate(prevProps, prevState) {
+//     console.log(prevProps);
+//     console.log(prevState);
+//     console.log("update");
+//   }
+
+//   handleIncrement = () => {
+//     this.setState((prev) => ({ counter: prev.counter + this.state.step }));
+//   };
+//   handleDecrement = () => {
+//     this.setState((prev) => ({ counter: prev.counter - this.state.step }));
+//   };
+//   handleReset = () => {
+//     this.setState({ counter: 0, step: 1 });
+//   };
+//   handleChangeStep = (e) => {
+//     this.setState({ step: +e.target.value }, () => {
+//       console.log(this.state.step);
+//     });
+//   };
+
+//   render() {
+//     const { counter, step } = this.state;
+//     return (
+//       <FlexContainer>
+//         <StyledCounter>
+//           <h1>{counter}</h1>
+//           <input type="text" value={step} onChange={this.handleChangeStep} />
+//           <Buttons
+//             handleDecrement={this.handleDecrement}
+//             handleIncrement={this.handleIncrement}
+//             handleReset={this.handleReset}
+//           />
+//           {/* <Flex>
+//             <StyledButton onClick={this.handleDecrement}>minus</StyledButton>
+//             <StyledButton onClick={this.handleReset}>reset</StyledButton>
+//             <StyledButton onClick={this.handleIncrement}>plus</StyledButton>
+//           </Flex> */}
+//         </StyledCounter>
+//       </FlexContainer>
+//     );
+//   }
+// }
 
 // export const Counter = () => {
 //   return (

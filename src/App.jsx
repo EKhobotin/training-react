@@ -9,10 +9,10 @@ import { Employee } from "./components/Employee/Employee";
 import Modal from "./components/Modal/Modal";
 import { Posts } from "./components/Posts/Posts";
 
-export const App = () => {
+export const App = ({ user }) => {
   return (
     <>
-      <Posts />
+      <Posts user={user} />
       {/* <Counter /> */}
       {/* <ColorPicker colors={colors} /> */}
       {/* <TodoList /> */}

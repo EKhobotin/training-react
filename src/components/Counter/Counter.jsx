@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Flex,
   FlexContainer,
@@ -33,9 +33,20 @@ export const Counter = () => {
     setStep(+e.target.value);
   };
 
+  const calcResult = () => {
+    for (let i = 0; i < 10000, i++) { }
+    return 21
+  }
+// юзмемо виконує колбек і повертає результат кешуючи його, якщо нічого не змінюється то повторно не виконується, якщо б ми просто записали резалт = калкрезалт йшло б обчислення при кожній зміні стейт
+  const result = useMemo(() => { return calcResult() }, [])
+
+
+
+
   return (
     <FlexContainer>
       <StyledCounter>
+        <h2>result</h2>
         <h1>{counter}</h1>
         <input type="text" value={step} onChange={handleChangeStep} />
         <Buttons

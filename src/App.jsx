@@ -15,8 +15,8 @@ export const App = () => {
       {/* <Posts /> */}
       {/* <Counter /> */}
       {/* <ColorPicker colors={colors} /> */}
-      <TodoList />
-      {/* <RegisterForm /> */}
+      {/* <TodoList /> */}
+      <RegisterForm />
       {/* <RegisterFormUncontrolled /> */}
       {/* <Employee /> */}
     </>

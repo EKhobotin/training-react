@@ -3,6 +3,7 @@ import React, {
   useCallback,
   useContext,
   useEffect,
+  useReducer,
   useState,
 } from "react";
 import SearchForm from "./SearchForm";
@@ -11,32 +12,40 @@ import styled from "styled-components";
 import { fetchPosts, fetchPostsByQuery } from "../../services/api";
 import { Comment } from "react-loader-spinner";
 import { UserContext } from "../../context/Context.Provider";
+import { initialState, postReducer } from "../../reducer/postReduser";
 
 export const Posts = ({ user }) => {
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [erorr, setErorr] = useState(null);
-  const [skip, setSkip] = useState(0);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [totalPosts, setTotalPosts] = useState(null);
+  // const [posts, setPosts] = useState([]);
+  // const [loading, setLoading] = useState(false);
+  // const [erorr, setErorr] = useState(null);
+  // const [skip, setSkip] = useState(0);
+  // const [searchQuery, setSearchQuery] = useState("");
+  // const [totalPosts, setTotalPosts] = useState(null);
   const { userName, logout } = useContext(UserContext);
-  console.log(userName);
+
+  const [state, dispatch] = useReducer(postReducer, initialState);
+  const { posts, loading, erorr, skip, searchQuery, totalPosts } = state;
+
   const getData = useCallback(async () => {
     try {
-      setLoading(true);
-      setErorr(null);
+      dispatch({ type: "SET_LOADING", payloading: true });
+      // setLoading(true);
+      // setErorr(null);
       const { posts, total } = searchQuery
         ? await fetchPosts({ skip })
         : await fetchPostsByQuery({
             skip,
             q: searchQuery,
           });
-      setPosts((prevState) => [...prevState, ...posts]);
-      setTotalPosts(total);
+      dispatch({ type: "FETCH_DATA", payload: { posts, total } });
+      // setPosts((prevState) => [...prevState, ...posts]);
+      // setTotalPosts(total);
     } catch (error) {
-      setErorr(error.message);
+      dispatch({ type: "SET_ERROR, payload: error.message" });
+      // setErorr(error.message);
     } finally {
-      setLoading(false);
+      dispatch({ type: "SET_LOADING", payloading: false });
+      // setLoading(false);
     }
   }, [searchQuery, skip]);
 
@@ -45,14 +54,14 @@ export const Posts = ({ user }) => {
   }, [getData, searchQuery, skip]);
 
   const handleLoadMore = () => {
-    // this.setState((prevState) => ({ skip: prevState.skip + 4 }));
-    setSkip((prevState) => prevState + 4);
+    // setSkip((prevState) => prevState + 4);
+    dispatch({ type: "SET_SKIP" });
   };
   const handleSetSearchQuery = (query) => {
-    // this.setState({ searchQuery: query, posts: [], skip: 0 });
-    setSearchQuery(query);
-    setPosts([]);
-    setSkip(0);
+    dispatch({ type: "CHANGE_QUERY", payload: query });
+    // setSearchQuery(query);
+    // setPosts([]);
+    // setSkip(0);
   };
 
   return (

@@ -28,8 +28,8 @@ export const App = ({ user }) => {
   // }
   return (
     <>
-      {/* <Posts user={user} /> */}
-      <Counter />
+      <Posts user={user} />
+      {/* <Counter /> */}
       {/* <ColorPicker colors={colors} /> */}
       {/* <TodoList /> */}
       {/* <RegisterForm /> */}

@@ -8,11 +8,10 @@ import { RegisterFormUncontrolled } from "./components/RegisterForm/RegisterForm
 import { Employee } from "./components/Employee/Employee";
 import Modal from "./components/Modal/Modal";
 import { Posts } from "./components/Posts/Posts";
-import { UserContext } from "./context/Context.Provider";
 
 export const App = ({ user }) => {
-  const { login, logout, isOnline } = useContext(UserContext);
-  const [loginUser, setloginUser] = useState("");
+  // const { login, logout, isOnline } = useContext(UserContext);
+  // const [loginUser, setloginUser] = useState("");
   // console.log(isOnline);
 
   // if (!isOnline) {
@@ -28,10 +27,10 @@ export const App = ({ user }) => {
   // }
   return (
     <>
-      <Posts user={user} />
+      {/* <Posts user={user} /> */}
       {/* <Counter /> */}
       {/* <ColorPicker colors={colors} /> */}
-      {/* <TodoList /> */}
+      <TodoList />
       {/* <RegisterForm /> */}
       {/* <RegisterFormUncontrolled /> */}
       {/* <Employee /> */}

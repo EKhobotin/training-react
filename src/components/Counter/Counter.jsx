@@ -6,101 +6,42 @@ import {
   StyledCounter,
 } from "./Counter.styled";
 import { Buttons } from "./Buttons";
+import { useDispatch, useSelector } from "react-redux";
+import { actionTypes } from "../../redux/counter/actionTypes";
+import { selectCounter, selectStep } from "../../redux/counter/selectors";
+import {
+  changeStep,
+  decrement,
+  increment,
+  reset,
+} from "../../redux/counter/action";
 
 export const Counter = () => {
-  // 1 . створюэмо початковий стейт
-  const initialState = {
-    counter: 0,
-    step: 1,
-  };
-  // 2. створюємо функцію уапавління, завжди приймає стейт і екшн
-  const counterReducer = (state, action) => {
-    console.log(action);
-    switch (action.type) {
-      case "INCREMENT":
-        return { ...state, counter: state.counter + state.step };
-      case "DECREMENT":
-        return { ...state, counter: state.counter - state.step };
-      case "RESET":
-        return { ...state, counter: 0, step: 1 };
-      case "SETSTEP":
-        return { ...state, step: action.payload };
+  // const counter = useSelector((state) => state.counterData.counter);
+  // const step = useSelector((state) => state.counterData.step);
+  const counter = useSelector(selectCounter);
+  const step = useSelector(selectStep);
 
-      default:
-        return state;
-    }
-  };
-  //3. викликаємо сам хук
-  const [state, dispatch] = useReducer(counterReducer, initialState);
-  // console.log(state);
-  const { counter, step } = state;
-
-  const myRef = useRef(null);
-  // створ.ємо юзреф і присвоюємо йому значення тру. значення реф не змінюється між рендерами, поки ми його не змінемо самі
-  const isFirstRender = useRef(true);
-  // при першому рендері юзефект побачить що юзреф = тру, присовїть йому фолс і ретурнеться, при другому і далі юзреф вже буде фолс іі буде виконуватись наступна логіка
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
-    // console.log("hello");
-  }, [counter]);
-  // підразхунок кідбкосіт рендерів створюємо початковий реф = 0
-  const renderCount = useRef(0);
-  // створюємо юзефект залежний віж всього і при його виконанні збільшуємо рендер каунт на 1
-  useEffect(() => {
-    renderCount.current++;
-    // console.log(renderCount.current);
-  });
-
-  useEffect(() => {
-    // console.log("counter");
-  }, [counter]);
-
-  const handleIncrement = () => {
-    dispatch({ type: "INCREMENT" });
-    // setCounter((prevState) => prevState + step);
-  };
-  const handleDecrement = () => {
-    dispatch({ type: "DECREMENT" });
-    // setCounter((prevState) => prevState - step);
-  };
-  const handleReset = () => {
-    dispatch({ type: "RESET" });
-    // setCounter(0);
-    // setStep(1);
-  };
-  const handleChangeStep = (e) => {
-    dispatch({ type: "SETSTEP", payload: +e.target.value });
-    // setStep(+e.target.value);
-  };
-
-  const calcResult = () => {
-    for (let i = 0; i < 10000; i++) {}
-    return 21;
-  };
-  // юзмемо виконує колбек і повертає результат кешуючи його, якщо нічого не змінюється то повторно не виконується, якщо б ми просто записали резалт = калкрезалт йшло б обчислення при кожній зміні стейт
-  const result = useMemo(() => {
-    return calcResult();
-  }, []);
+  const dispatch = useDispatch();
 
   return (
     <FlexContainer>
       <StyledCounter>
-        <h2>result</h2>
         <h1>{counter}</h1>
         <input
-          ref={myRef}
           type="text"
           value={step}
-          onChange={handleChangeStep}
+          onChange={(e) => dispatch(changeStep(e.target.value))}
         />
-        <Buttons
-          handleDecrement={handleDecrement}
-          handleIncrement={handleIncrement}
-          handleReset={handleReset}
-        />
+        <Flex>
+          <StyledButton onClick={() => dispatch(decrement())}>
+            minus
+          </StyledButton>
+          <StyledButton onClick={() => dispatch(reset())}>reset</StyledButton>
+          <StyledButton onClick={() => dispatch(increment())}>
+            plus
+          </StyledButton>
+        </Flex>
       </StyledCounter>
     </FlexContainer>
   );

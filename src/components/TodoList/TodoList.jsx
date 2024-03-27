@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectFilter, selectTodos } from "../../redux/todos/selectors";
 import { actionTypes } from "../../redux/todos/actionTypes";
 import {
-  addTodo,
   deleteTodo,
-  setFilter,
   toggleTodo,
-} from "../../redux/todos/action";
+  addTodo,
+  setFilter,
+} from "../../redux/todos/todoSlice";
 
 export const TodoList = () => {
   const todos = useSelector(selectTodos);
@@ -18,8 +18,7 @@ export const TodoList = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newTodo = { id: crypto.randomUUID(), title: todoTitle };
-    dispatch(addTodo(newTodo));
+    dispatch(addTodo(todoTitle));
     setTodotitle("");
   };
 
@@ -35,6 +34,7 @@ export const TodoList = () => {
   };
 
   const filteredTodos = getFilteredTodos();
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
